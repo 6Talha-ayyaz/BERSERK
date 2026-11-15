@@ -1,0 +1,13 @@
+# dependencies and build output
+node_modules/
+dist/
+
+# full-size original models (57 MB): the site ships the optimised copies in public/models
+source/
+textures/
+
+# local tooling
+.vercel/
+*.log
+.DS_Store
+Thumbs.db

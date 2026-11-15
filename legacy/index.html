@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Featured Collection</title>
+<meta name="description" content="Walk into the boutique and browse the featured collection in 3D.">
+<meta name="theme-color" content="#1a1612">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.147.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body class="is-loading">
+
+<canvas id="scene" aria-label="3D boutique showing the featured products on clothing rails"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ============ Loader ============ -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader-panel loader-panel--top" aria-hidden="true"></div>
+  <div class="loader-panel loader-panel--bottom" aria-hidden="true"></div>
+  <div class="loader-inner">
+    <p class="loader-brand" data-store-name></p>
+    <p class="loader-sub" id="loader-sub">Opening the boutique</p>
+    <div class="loader-bar"><span id="loader-fill"></span></div>
+    <p class="loader-pct"><span id="loader-pct">0</span>%</p>
+  </div>
+</div>
+
+<!-- ============ Header ============ -->
+<header class="topbar">
+  <a class="brand" href="#/" data-store-name></a>
+  <nav class="topnav" aria-label="Main">
+    <a class="topnav-link" href="#/">Featured</a>
+    <button class="bag" id="bag-btn" type="button" aria-label="Shopping bag">
+      Bag <span class="bag-count" id="bag-count">0</span>
+    </button>
+  </nav>
+</header>
+
+<!-- ============ Store (room) UI ============ -->
+<section class="store-ui" id="store-ui" aria-label="Featured products">
+  <div class="store-head">
+    <p class="eyebrow">Featured collection</p>
+    <h1 class="store-title" id="store-title"></h1>
+  </div>
+
+  <div class="dock">
+    <div class="dock-row">
+      <button class="dock-arrow" id="dock-prev" type="button" aria-label="Previous">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <ol class="dock-list" id="dock-list"></ol>
+      <button class="dock-arrow" id="dock-next" type="button" aria-label="Next">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <p class="dock-hint" id="dock-hint">Scroll to browse · Hover a piece to turn it · Click to open</p>
+  </div>
+</section>
+
+<!-- floating label that follows the hovered product -->
+<div class="tag" id="tag" aria-hidden="true">
+  <span class="tag-line"></span>
+  <span class="tag-body">
+    <span class="tag-name" id="tag-name"></span>
+    <span class="tag-meta"><span id="tag-price"></span><span class="tag-cta">View piece →</span></span>
+  </span>
+</div>
+
+<!-- ============ Product page ============ -->
+<main class="pdp" id="pdp" aria-hidden="true" tabindex="-1"></main>
+<div class="pdp-stage-hint" id="pdp-hint" aria-hidden="true">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>
+  Drag to turn
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-ring"></span><span class="cursor-label" id="cursor-label">View</span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript><p class="noscript">This boutique needs JavaScript and WebGL to open.</p></noscript>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
