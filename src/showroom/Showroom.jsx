@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { STORE, FEATURED } from './data/products.js';
+import { STORE, FEATURED } from '../data/products.js';
 import { createStorefront, FINE } from './three/storefront.js';
-import { fmtPrice } from './lib/format.js';
-import { useBag, useToast } from './lib/hooks.js';
+import { fmtPrice } from '../lib/format.js';
+import { useToast } from '../lib/hooks.js';
+import { useStore } from '../site/store.jsx';
 import Landing from './components/Landing.jsx';
 import Header from './components/Header.jsx';
 import StoreUI from './components/StoreUI.jsx';
@@ -11,13 +12,14 @@ import HoverTag from './components/HoverTag.jsx';
 import ProductPage from './components/ProductPage.jsx';
 import Cursor from './components/Cursor.jsx';
 import Toast from './components/Toast.jsx';
+import './showroom.css';
 
 const BASE_TITLE = `${STORE.name} | ${STORE.collection}`;
 
 export default function App() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const match = pathname.match(/^\/product\/([\w-]+)\/?$/);
+  const match = pathname.match(/^\/showroom\/([\w-]+)\/?$/);
   const routeId = match ? match[1] : null;
 
   const hostRef = useRef(null);
@@ -39,7 +41,7 @@ export default function App() {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const [current, setCurrent] = useState(-1);
-  const { bag, add } = useBag();
+  const { count, add, openCart } = useStore();
   const [toast, showToast] = useToast();
 
   /* ---------- the 3D scene ---------- */
@@ -60,7 +62,7 @@ export default function App() {
         hover: setHoverIndex,
         active: setActiveIndex,
         current: setCurrent,
-        navigate: (id, replace) => navRef.current(id ? `/product/${id}` : '/', { replace }),
+        navigate: (id, replace) => navRef.current(id ? `/showroom/${id}` : '/showroom', { replace }),
         returned: (i) => {
           const link = dockLinks.current[i];
           if (link && document.activeElement !== link) link.focus({ preventScroll: true });
@@ -71,11 +73,18 @@ export default function App() {
     return () => { store.dispose(); engine.current = null; };
   }, []);
 
+  /* the showroom is a fixed, full-screen scene: lock page scroll while it is open */
+  useEffect(() => {
+    document.documentElement.classList.add('in-showroom');
+    window.scrollTo(0, 0);
+    return () => document.documentElement.classList.remove('in-showroom');
+  }, []);
+
   /* ---------- URL -> scene ---------- */
   useEffect(() => { engine.current?.setRoute(routeId); }, [routeId]);
-  const knownPath = pathname === '/' || !!match;
+  const knownPath = pathname === '/showroom' || pathname === '/showroom/' || !!match;
   useEffect(() => {
-    if (!knownPath) navigate('/', { replace: true });
+    if (!knownPath) navigate('/showroom', { replace: true });
   }, [knownPath, navigate]);
 
   /* ---------- focus + title follow the scene ---------- */
@@ -88,12 +97,10 @@ export default function App() {
 
   /* ---------- bag ---------- */
   const onAdd = useCallback((product, size, color) => {
-    add({ id: product.id, size, color });
+    add(product.id, size, color);
     showToast(`Added to bag: ${product.name}${size ? `, ${size}` : ''}`);
   }, [add, showToast]);
-  const onBag = useCallback(() => {
-    showToast(bag.length ? `${bag.length} piece${bag.length > 1 ? 's' : ''} in your bag. Checkout is coming soon.` : 'Your bag is empty.');
-  }, [bag.length, showToast]);
+  const onBag = openCart;
 
   const dock = useMemo(() => ({
     step: (dir) => engine.current?.step(dir),
@@ -129,7 +136,7 @@ export default function App() {
           onEnter={onEnter}
         />
       )}
-      <Header bagCount={bag.length} onBag={onBag} />
+      <Header bagCount={count} onBag={onBag} />
       <StoreUI products={FEATURED} current={current} dock={dock} linkRefs={dockLinks} />
       <HoverTag ref={tagRef} name={hovered?.name} price={hovered ? fmtPrice(hovered.price) : ''} />
 

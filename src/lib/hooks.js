@@ -1,22 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const BAG_KEY = 'boutique-bag';
-
-/* Shopping bag. Demo only: items are kept in this browser's localStorage.
-   Connect to a real checkout (Shopify, Stripe…) before launch. */
-export function useBag() {
-  const [bag, setBag] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(BAG_KEY) || '[]'); } catch (_) { return []; }
-  });
-  const add = useCallback((entry) => {
-    setBag((b) => {
-      const next = [...b, entry];
-      try { localStorage.setItem(BAG_KEY, JSON.stringify(next)); } catch (_) { /* private mode */ }
-      return next;
-    });
-  }, []);
-  return { bag, add };
-}
+/* (The bag now lives in src/site/store.jsx, shared by the shop and the showroom.) */
 
 export function useToast(ms = 2800) {
   const [toast, setToast] = useState({ msg: '', on: false });

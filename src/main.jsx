@@ -1,14 +1,13 @@
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
-import App from './App.jsx';
-import './styles.css';
+import Site from './site/Site.jsx';
 
-// HashRouter keeps product URLs as #/product/<id>: they work on any static host
-// with no server rewrites, and links shared from the old site still open.
-// (No StrictMode: its double-mounted effects in development would load the
-// 50 MB+ of 3D models twice.)
+// HashRouter keeps every URL as #/…: the built site works on any static host
+// with no server rewrites, and product links (#/product/<id>) stay shareable.
+// (No StrictMode: its double-mounted effects in development would start every
+// WebGL scene twice.)
 createRoot(document.getElementById('root')).render(
-  <HashRouter>
-    <App />
+  <HashRouter future={{ v7_relativeSplatPath: true }}>
+    <Site />
   </HashRouter>,
 );

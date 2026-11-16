@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { STORE } from '../data/products.js';
-import { replayClass } from '../lib/format.js';
+import { STORE } from '../../data/products.js';
+import { replayClass } from '../../lib/format.js';
 
 export default function Header({ bagCount, onBag }) {
   const bagRef = useRef(null);
@@ -15,7 +15,7 @@ export default function Header({ bagCount, onBag }) {
     <header className="topbar">
       <Link className="brand" to="/">{STORE.name}</Link>
       <nav className="topnav" aria-label="Main">
-        <Link className="topnav-link" to="/">Featured</Link>
+        <Link className="topnav-link" to="/shop">Shop all</Link>
         <button ref={bagRef} className="bag" type="button" aria-label={`Shopping bag, ${bagCount} items`} onClick={onBag}>
           Bag <span className="bag-count">{bagCount}</span>
         </button>

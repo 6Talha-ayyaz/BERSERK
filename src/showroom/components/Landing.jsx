@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
-import { STORE } from '../data/products.js';
-import { fmtPrice, pad } from '../lib/format.js';
+import { STORE } from '../../data/products.js';
+import { fmtPrice, pad } from '../../lib/format.js';
 
 const MAX_LISTED = 4;   // the landing lists the first few pieces; the rest are inside
 
@@ -54,7 +54,7 @@ const Landing = forwardRef(function Landing({ products, progress, ready, waiting
         <ol>
           {products.slice(0, MAX_LISTED).map((p, i) => (
             <li key={p.id}>
-              <Link to={`/product/${p.id}`}>
+              <Link to={`/showroom/${p.id}`}>
                 <span className="landing-edit-num">{pad(i + 1)}</span>
                 <span className="landing-edit-name">{p.name}</span>
                 <span className="landing-edit-price">{fmtPrice(p.price)}</span>

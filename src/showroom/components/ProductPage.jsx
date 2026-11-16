@@ -1,7 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { REDUCED } from '../three/storefront.js';
-import { fmtPrice, pad, replayClass } from '../lib/format.js';
+import { fmtPrice, pad, replayClass } from '../../lib/format.js';
 
 /* The product page that unfolds beside the piece.
    Reveal choreography:
@@ -83,7 +83,7 @@ function Details({ products, i, titleRef, onAdd }) {
 
   return (
     <>
-      <Link className="pdp-back rv" style={{ '--i': 0 }} to="/">
+      <Link className="pdp-back rv" style={{ '--i': 0 }} to="/showroom">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>Back to the store
       </Link>
       <p className="pdp-eyebrow rv" style={{ '--i': 1 }}>Featured · {pad(i + 1)} / {pad(n)}</p>
@@ -141,8 +141,8 @@ function Details({ products, i, titleRef, onAdd }) {
 
       {n > 1 && (
         <nav className="pdp-pager rv" style={{ '--i': 11 }} aria-label="More pieces">
-          <Link to={`/product/${prev.id}`} className="prev"><span>← Previous</span><b>{prev.name}</b></Link>
-          <Link to={`/product/${next.id}`} className="next"><span>Next →</span><b>{next.name}</b></Link>
+          <Link to={`/showroom/${prev.id}`} className="prev"><span>← Previous</span><b>{prev.name}</b></Link>
+          <Link to={`/showroom/${next.id}`} className="next"><span>Next →</span><b>{next.name}</b></Link>
         </nav>
       )}
 

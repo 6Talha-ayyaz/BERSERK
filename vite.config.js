@@ -6,5 +6,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: './',
   plugins: [react()],
-  build: { chunkSizeWarningLimit: 900 },
+  build: {
+    chunkSizeWarningLimit: 900,
+    // three.js and the animation library change rarely: keep them in their own cached files
+    rollupOptions: { output: { manualChunks: { three: ['three'], motion: ['framer-motion'] } } },
+  },
 });

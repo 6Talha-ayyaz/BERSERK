@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { STORE } from '../data/products.js';
+import { STORE } from '../../data/products.js';
 import { FINE, REDUCED } from '../three/storefront.js';
-import { pad } from '../lib/format.js';
+import { pad } from '../../lib/format.js';
 
 /* Collection headline + the bottom dock listing every featured piece. */
 export default memo(function StoreUI({ products, current, dock, linkRefs }) {
@@ -36,7 +36,7 @@ export default memo(function StoreUI({ products, current, dock, linkRefs }) {
             {products.map((p, i) => (
               <li key={p.id} className={`dock-item${i === current ? ' is-current' : ''}`}>
                 <Link
-                  to={`/product/${p.id}`}
+                  to={`/showroom/${p.id}`}
                   ref={(el) => { linkRefs.current[i] = el; }}
                   onMouseEnter={() => dock.enter(i)}
                   onMouseLeave={() => dock.leave(i)}
